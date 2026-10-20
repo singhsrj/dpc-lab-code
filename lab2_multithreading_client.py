@@ -1,0 +1,31 @@
+import socket
+import os
+
+HOST ="127.0.0.1"
+PORT = 5000
+
+def main():
+    # Main function for the client program
+    pid = os.getpid() # Get process ID of this client (helps identify multiple clients)
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((HOST, PORT)) # Connect to the server at given IP and port
+        # Print client connection information
+        print(f"Client PID={pid} connected. Type messages:")
+        while True: # Run client continuously
+
+            msg = input("> ") # Read message from user input
+            # Send message to server (add newline for proper formatting)
+            s.sendall((msg + "\n").encode("utf-8"))
+            # Receive response from server (up to 4096 bytes)
+            print(
+            s.recv(4096).decode("utf-8", errors="strict"),
+            end="" # Avoid adding extra newline
+            )
+
+            # Entry point of the program
+
+if __name__ == "__main__":
+    main() # Start the client
+
+    
